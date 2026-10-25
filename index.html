@@ -289,7 +289,7 @@ button:focus-visible{outline:2px solid var(--flood);outline-offset:2px}
       <button type="button" class="efill" id="eFill"></button><button type="button" class="ovalt" id="eClose">Tamam</button></div></div>
     <div class="srch" id="srch" hidden><div class="sbox">
       <div class="radar" id="srRadar"><i></i><i></i><i></i><span class="sball"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#FBFAF4" stroke="#0B1426" stroke-width="2"/><path d="M20 2a18 18 0 0 1 17 12c-6-2-12 0-17 6M3.5 27c6 2 12 0 16.5-7M20 38a18 18 0 0 1-8-22" fill="none" stroke="#1F5FD1" stroke-width="2.6"/><path d="M20 20c4 4 7 10 7.2 16.6" fill="none" stroke="#FFC21A" stroke-width="2.6"/></svg></span></div>
-      <h2 id="srT">Rakip aranıyor</h2><p id="srP"></p><b class="srtime" id="srTime">00:00</b>
+      <h2 id="srT">Rakip aranıyor</h2><p id="srP"></p><b class="srtime" id="srTime">00:00</b><small id="srDbg" style="font-size:11px;color:var(--muted);opacity:.8"></small>
       <div class="vs" id="srVs" hidden><div class="vt me"><span class="vdot" id="vsMeC"></span><b id="vsMe"></b><small id="vsMeL"></small></div><span class="vsx">VS</span><div class="vt op"><span class="vdot" id="vsOpC"></span><b id="vsOp"></b><small id="vsOpL"></small></div></div>
       <button type="button" class="ovalt" id="srX">Vazgeç</button></div></div>
     <nav class="nav" aria-label="Menü">
@@ -1666,13 +1666,13 @@ function openChannel(name,h){
   if(LOCALNET){const bc=new BroadcastChannel("wv:"+name),peers={};let st=null,closed=false;
     const list=()=>{const o=Object.values(peers).filter(p=>Date.now()-p.at<3000).map(p=>p.s);if(st)o.push(st);return o};
     bc.onmessage=e=>{const d=e.data;if(closed||d.from===myId)return;if(d.k==="m")h.msg&&h.msg(d.p);else if(d.k==="p"){peers[d.from]={s:d.s,at:Date.now()};h.pres&&h.pres(list())}else if(d.k==="x"){delete peers[d.from];h.pres&&h.pres(list())}};
-    const iv=setInterval(()=>{if(st)bc.postMessage({k:"p",from:myId,s:st});h.pres&&h.pres(list())},600);setTimeout(()=>h.ready&&h.ready(),30);
+    const iv=setInterval(()=>{if(st)bc.postMessage({k:"p",from:myId,s:st});h.pres&&h.pres(list())},600);setTimeout(()=>{h.status&&h.status("LOCAL");h.ready&&h.ready()},30);
     return{send:p=>{if(!closed)bc.postMessage({k:"m",from:myId,p})},track:x=>{st=Object.assign({id:myId},x);bc.postMessage({k:"p",from:myId,s:st});h.pres&&h.pres(list())},
       untrack:()=>{st=null;bc.postMessage({k:"x",from:myId})},close:()=>{if(closed)return;clearInterval(iv);if(st)bc.postMessage({k:"x",from:myId});closed=true;bc.close()}}}
   const ch=sbClient.channel("wv-"+name,{config:{broadcast:{self:false,ack:false},presence:{key:myId}}});let st=null,ok=false,closed=false;
   ch.on("broadcast",{event:"m"},({payload})=>{if(!closed)h.msg&&h.msg(payload)});
   ch.on("presence",{event:"sync"},()=>{if(closed)return;const S=ch.presenceState();h.pres&&h.pres(Object.values(S).map(v=>v[v.length-1]).filter(Boolean))});
-  ch.subscribe(status=>{if(closed)return;if(status==="SUBSCRIBED"){ok=true;if(st)ch.track(st);h.ready&&h.ready()}else if(status==="CHANNEL_ERROR"||status==="TIMED_OUT")h.err&&h.err(status)});
+  ch.subscribe((status,err)=>{if(closed)return;h.status&&h.status(status+(err&&err.message?" "+err.message:""));if(status==="SUBSCRIBED"){ok=true;if(st)ch.track(st);h.ready&&h.ready()}else if(status==="CHANNEL_ERROR"||status==="TIMED_OUT")h.err&&h.err(status)});
   return{send:p=>{if(ok&&!closed)ch.send({type:"broadcast",event:"m",payload:p})},track:x=>{st=Object.assign({id:myId},x);if(ok)ch.track(st)},untrack:()=>{st=null;if(ok)ch.untrack()},
     close:()=>{if(closed)return;closed=true;try{ch.untrack()}catch(_){}try{sbClient.removeChannel(ch)}catch(_){}}}}
 /* ---------- search: everybody waiting sits in one lobby; the two who have waited longest in the same league are paired.
@@ -1681,9 +1681,9 @@ function searchState(){return{lg:search.lg,t0:search.t0,any:search.any,v:1}}
 function startSearch(){stopSearch();closeNet();if($("home").hidden)goHome();const lg=leagueIdx(profile.trophies);
   search={t0:Date.now(),lg,any:false,list:[],partner:null};
   $("srch").hidden=false;$("srVs").hidden=true;$("srRadar").classList.remove("found");$("srX").hidden=false;$("srT").textContent="Rakip aranıyor";$("srP").textContent=LEAGUES[lg].n+" · "+LEAGUES[lg].np+" oyuncu";$("srTime").textContent="00:00";
-  search.ch=openChannel("lobby",{pres:l=>{if(!search)return;search.list=l;tryPair()},ready:()=>{if(search)search.ch.track(searchState())},
+  search.ch=openChannel("lobby",{status:x=>{if(search)search.stat=x},pres:l=>{if(!search)return;search.list=l;search.pc=(search.pc||0)+1;tryPair()},ready:()=>{if(search)search.ch.track(searchState())},
     err:()=>{if(!search)return;$("srT").textContent="Bağlantı kurulamadı";$("srP").textContent="İnternetini kontrol edip tekrar dene."}});
-  search.iv=setInterval(()=>{if(!search)return;const el=Date.now()-search.t0;$("srTime").textContent=mmss(el);
+  search.iv=setInterval(()=>{if(!search)return;const el=Date.now()-search.t0;$("srTime").textContent=mmss(el);$("srDbg").textContent=(search.stat||"bağlanıyor")+" · lobide "+(search.list||[]).length+" · "+(cloudUid?"giriş ✓":"giriş ✗")+" · "+(search.pc||0);
     if(!search.any&&el>15000){search.any=true;if(!search.partner)search.ch.track(searchState());$("srP").textContent="Bütün liglerde aranıyor"}tryPair()},500)}
 function stopSearch(){if(!search)return;clearInterval(search.iv);if(search.ch)search.ch.close();search=null}
 function tryPair(){if(!search||search.partner)return;
