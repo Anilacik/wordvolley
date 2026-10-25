@@ -1677,15 +1677,42 @@ function openChannel(name,h){
     close:()=>{if(closed)return;closed=true;try{ch.untrack()}catch(_){}try{sbClient.removeChannel(ch)}catch(_){}}}}
 /* ---------- search: everybody waiting sits in one lobby; the two who have waited longest in the same league are paired.
    After 15 s a player also accepts any league; the match is then played by the lower league's rules. ---------- */
+
+/* ---------- database matchmaking: a queue row per searcher; find_match() pairs the two who waited longest ---------- */
+function dbSearch(){const lg=leagueIdx(profile.trophies),info={name:profile.name,color:profile.color,tro:profile.trophies,lg};
+  search={t0:Date.now(),lg,any:false,list:[],partner:null,db:true,stat:"bağlanıyor",n:0};const S=search;
+  $("srch").hidden=false;$("srVs").hidden=true;$("srRadar").classList.remove("found");$("srX").hidden=false;$("srT").textContent="Rakip aranıyor";$("srP").textContent=LEAGUES[lg].n+" · "+LEAGUES[lg].np+" oyuncu";$("srTime").textContent="00:00";
+  const ui=()=>{if(search!==S)return;const el=Date.now()-S.t0;$("srTime").textContent=mmss(el);if(!S.any&&el>15000){S.any=true;$("srP").textContent="Bütün liglerde aranıyor"}
+    $("srDbg").textContent=S.stat+" · "+(cloudUid?"giriş ✓":"giriş ✗")+" · "+S.n};
+  S.iv=setInterval(ui,500);ui();
+  const tick=async()=>{if(search!==S)return;
+    if(!cloudUid){S.stat="giriş bekleniyor";S.to=setTimeout(tick,800);return}
+    try{const {data,error}=await sbClient.rpc("find_match",{p_lg:lg,p_any:S.any,p_info:info});if(error)throw error;S.n++;S.stat="sırada";
+      if(data&&search===S){S.done=true;dbMatched(data,info);return}}catch(e){S.stat="hata: "+((e&&e.message)||e)}
+    if(search===S)S.to=setTimeout(tick,900+Math.random()*700)};
+  tick()}
+function dbMatched(m,info){const host=m.a===cloudUid;
+  net={mid:m.id,host,peer:host?m.b:m.a,q:[],lastHeard:Date.now(),started:false,inMatch:false,info,peerInfo:(host?m.b_info:m.a_info)||null,start:{lg:m.lg,hostServes:!!m.a_serves},goneAt:0};
+  const N=net;N.ch=dbChannel(m.id,x=>netMsg(N,x));netGo()}
+/* a match "room" on the database: messages are inserted in order and read back every 0.4 s */
+function dbChannel(mid,onMsg){let last=0,closed=false,chain=Promise.resolve(),busy=false;
+  const poll=async()=>{if(closed||busy)return;busy=true;
+    try{const {data,error}=await sbClient.from("mm_msgs").select("id,body").eq("match_id",mid).neq("sender",cloudUid).gt("id",last).order("id",{ascending:true}).limit(50);
+      if(!error&&data)data.forEach(r=>{last=Math.max(last,r.id);if(!closed)onMsg(r.body)})}catch(_){}
+    busy=false};
+  const iv=setInterval(poll,400);poll();
+  return{send:b=>{if(closed)return;chain=chain.then(()=>sbClient.from("mm_msgs").insert({match_id:mid,body:b})).then(()=>{},()=>{})},
+    track:()=>{},untrack:()=>{},
+    close:()=>{if(closed)return;closed=true;clearInterval(iv);setTimeout(()=>{sbClient.from("mm_msgs").delete().eq("match_id",mid).eq("sender",cloudUid).then(()=>{},()=>{})},15000)}}}
 function searchState(){return{lg:search.lg,t0:search.t0,any:search.any,v:1}}
-function startSearch(){stopSearch();closeNet();if($("home").hidden)goHome();const lg=leagueIdx(profile.trophies);
+function startSearch(){stopSearch();closeNet();if($("home").hidden)goHome();if(!LOCALNET){dbSearch();return}const lg=leagueIdx(profile.trophies);
   search={t0:Date.now(),lg,any:false,list:[],partner:null};
   $("srch").hidden=false;$("srVs").hidden=true;$("srRadar").classList.remove("found");$("srX").hidden=false;$("srT").textContent="Rakip aranıyor";$("srP").textContent=LEAGUES[lg].n+" · "+LEAGUES[lg].np+" oyuncu";$("srTime").textContent="00:00";
   search.ch=openChannel("lobby",{status:x=>{if(search)search.stat=x},pres:l=>{if(!search)return;search.list=l;search.pc=(search.pc||0)+1;tryPair()},ready:()=>{if(search)search.ch.track(searchState())},
     err:()=>{if(!search)return;$("srT").textContent="Bağlantı kurulamadı";$("srP").textContent="İnternetini kontrol edip tekrar dene."}});
   search.iv=setInterval(()=>{if(!search)return;const el=Date.now()-search.t0;$("srTime").textContent=mmss(el);$("srDbg").textContent=(search.stat||"bağlanıyor")+" · lobide "+(search.list||[]).length+" · "+(cloudUid?"giriş ✓":"giriş ✗")+" · "+(search.pc||0);
     if(!search.any&&el>15000){search.any=true;if(!search.partner)search.ch.track(searchState());$("srP").textContent="Bütün liglerde aranıyor"}tryPair()},500)}
-function stopSearch(){if(!search)return;clearInterval(search.iv);if(search.ch)search.ch.close();search=null}
+function stopSearch(){if(!search)return;clearInterval(search.iv);clearTimeout(search.to);if(search.ch)search.ch.close();if(search.db&&cloudUid&&!search.done)sbClient.from("mm_queue").delete().eq("uid",cloudUid).then(()=>{},()=>{});search=null}
 function tryPair(){if(!search||search.partner)return;
   const L=(search.list||[]).filter(p=>p&&p.v===1&&p.id).sort((a,b)=>a.t0-b.t0||(a.id<b.id?-1:1)),used=new Set();let mine=null;
   for(let i=0;i<L.length&&!mine;i++){if(used.has(L[i].id))continue;
@@ -1716,7 +1743,7 @@ function netBegin(N,lg,o){$("srch").hidden=true;$("home").hidden=true;document.q
   me=0;op=0;newStats();TUTI=-1;applyStage(LEAGUES[lg]);document.querySelector(".app").classList.remove("tut");
   opCol=(TEAMC[o.color]&&o.color!==profile.color)?TEAMC[o.color]:null;
   $("hudMe").textContent=(profile.name.split(" ")[0]||"SEN").toUpperCase().slice(0,9);$("hudOp").textContent=((o.name||"RAKİP").split(" ")[0]).toLocaleUpperCase("tr").slice(0,9);
-  N.inMatch=true;N.lastHeard=Date.now();N.ping=setInterval(()=>{if(net===N)N.ch.send({t:"ping"})},2000);
+  N.inMatch=true;N.lastHeard=Date.now();N.ping=setInterval(()=>{if(net===N)N.ch.send({t:"ping"})},3000);
   const iServe=N.host===!!N.start.hostServes;nextServer=iServe?"me":"op";newRally(nextServer)}
 function netSend(m){if(net&&net.ch)net.ch.send(m)}
 /* after your shot is dug: the rival floats the ball in slow motion while the other player types */
