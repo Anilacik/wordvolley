@@ -182,6 +182,20 @@ body{background:var(--night);color:var(--chalk);font-family:var(--font-body);mar
 .setlist button::after{content:"›";font-size:26px;line-height:1;color:var(--muted);font-weight:400}
 .setlist button:active{background:rgba(255,255,255,.08)}
 .brand h1{filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}
+.chip.energy{display:none!important}
+.app.menu #overlay{background:rgba(11,20,38,.97)}
+.onlbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:min(100%,320px);margin-top:-4px;padding:10px 14px;border-radius:16px;cursor:pointer;
+  background:linear-gradient(180deg,#1FC4B2,#12907F);border:0;color:#fff;box-shadow:0 5px 0 #0B6156,0 12px 24px rgba(23,179,163,.3);font-family:var(--font-board)}
+.onlbtn b{font-size:24px;font-weight:800;letter-spacing:.08em}.onlbtn small{font-size:12.5px;font-weight:700;letter-spacing:.06em;opacity:.9;text-transform:uppercase}
+.onlbtn .od{width:10px;height:10px;border-radius:50%;background:#B6FFD0;box-shadow:0 0 0 3px rgba(182,255,208,.25);animation:odp 1.6s ease-in-out infinite}
+@keyframes odp{50%{box-shadow:0 0 0 6px rgba(182,255,208,0)}}
+.onlbtn:active{transform:translateY(4px);box-shadow:0 1px 0 #0B6156}.onlbtn[disabled]{filter:grayscale(.8) brightness(.7);cursor:default}
+@media (prefers-reduced-motion:reduce){.onlbtn .od{animation:none}}
+.league .lcup svg{display:none}.league .lcup i{font-size:15px;color:#c9d6ea;font-family:var(--font-body);font-weight:600}
+#overlay .lvgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:4px 0;width:100%}
+#overlay .lv{display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0;padding:8px 0;border-radius:12px;border:2px solid var(--bc);background:rgba(255,255,255,.05);color:#fff;cursor:pointer;font-family:var(--font-board);font-size:inherit}
+#overlay .lv b{font-size:22px;line-height:1}#overlay .lv small{font-size:9.5px;color:var(--muted);font-family:var(--font-body)}
+#overlay .lv.done{background:color-mix(in srgb,var(--bc) 28%,transparent)}#overlay .lv.cur{box-shadow:0 0 0 3px rgba(255,211,77,.6)}#overlay .lv[disabled]{opacity:.35;cursor:default;border-color:rgba(255,255,255,.2)}
 .ovrow{display:flex;gap:10px;justify-content:center;margin-top:4px}
 .trophy-delta{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;font-family:var(--font-board);font-weight:800;font-size:22px}
 .trophy-delta.up{color:var(--goal)}.trophy-delta.down{color:var(--bad)}
@@ -269,7 +283,8 @@ button:focus-visible{outline:2px solid var(--flood);outline-offset:2px}
         <span class="linfo"><b id="hLeague">Kum Ligi</b><span class="lcup"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M7 3h10v5a5 5 0 0 1-10 0z" fill="#FFD34D"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3" fill="none" stroke="#FFD34D" stroke-width="2"/><path d="M10 13h4v3h2v3H8v-3h2z" fill="#E0A800"/></svg><i id="hTro">0</i></span>
           <span class="prog"><i id="hProg"></i></span><small id="hNext"></small></span>
       </button>
-      <button class="playbtn" id="playBtn" type="button"><span class="pl"><i class="pball"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#FBFAF4" stroke="#0B1426" stroke-width="2.4"/><path d="M20 2a18 18 0 0 1 17 12c-6-2-12 0-17 6M3.5 27c6 2 12 0 16.5-7M20 38a18 18 0 0 1-8-22" fill="none" stroke="#1F5FD1" stroke-width="2.8"/><path d="M20 20c4 4 7 10 7.2 16.6" fill="none" stroke="#FFC21A" stroke-width="2.8"/></svg></i><span id="playTxt">OYNA</span></span><small id="hPlaySub">7 sayı · Kum Ligi</small></button>
+      <button class="playbtn" id="playBtn" type="button"><span class="pl"><i class="pball"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#FBFAF4" stroke="#0B1426" stroke-width="2.4"/><path d="M20 2a18 18 0 0 1 17 12c-6-2-12 0-17 6M3.5 27c6 2 12 0 16.5-7M20 38a18 18 0 0 1-8-22" fill="none" stroke="#1F5FD1" stroke-width="2.8"/><path d="M20 20c4 4 7 10 7.2 16.6" fill="none" stroke="#FFC21A" stroke-width="2.8"/></svg></i><span id="playTxt">OYNA</span></span><small id="hPlaySub">5 sayı · Kum Ligi</small></button>
+      <button class="onlbtn" id="onlBtn" type="button"><span class="od"></span><b>ONLINE</b><small id="onlSub">6’ya 6</small></button>
       <div class="hstats"><div><i class="si"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#FBFAF4" stroke="#0B1426" stroke-width="2.4"/><path d="M20 2a18 18 0 0 1 17 12c-6-2-12 0-17 6M3.5 27c6 2 12 0 16.5-7M20 38a18 18 0 0 1-8-22" fill="none" stroke="#1F5FD1" stroke-width="2.8"/><path d="M20 20c4 4 7 10 7.2 16.6" fill="none" stroke="#FFC21A" stroke-width="2.8"/></svg></i><b id="hPlayed">0</b><span>Maç</span></div><div><i class="si"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v5a5 5 0 0 1-10 0z" fill="#FFD34D"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3" fill="none" stroke="#FFD34D" stroke-width="2"/><path d="M10 13h4v3h2v3H8v-3h2z" fill="#E0A800"/></svg></i><b id="hWins">0</b><span>Galibiyet</span></div><div><i class="si"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6z" fill="#FF8A5B"/></svg></i><b id="hBest">—</b><span>En güçlü kelime</span></div></div>
     </section>
     <section class="tab" id="tab-market"><h2>Market</h2><p class="sub">Maçlarda kazandığın jetonlarla özellik al.</p><div class="list" id="mList"></div></section>
@@ -279,7 +294,7 @@ button:focus-visible{outline:2px solid var(--flood);outline-offset:2px}
         <span class="fld">Forma rengi</span><div class="sw" id="tColors"></div></div>
       <div class="roster" id="tRoster"></div>
     </section>
-    <section class="tab" id="tab-cups"><h2>Kupalar</h2><p class="sub">Kazandığın her maç <b>+30</b>, kaybettiğin her maç <b>−15</b> kupa. Yeni lige çıkınca jeton ödülü alırsın, rakipler ve harfler zorlaşır.</p><div class="road" id="cRoad"></div></section>
+    <section class="tab" id="tab-cups"><h2>Kupalar</h2><p class="sub">Kupalar sadece <b>online</b> maçlardan gelir: kazandığın maç <b>+30</b>, kaybettiğin <b>−15</b> kupa. Yeni rütbeye çıkınca jeton ödülü alırsın.</p><div class="road" id="cRoad"></div></section>
     <section class="tab" id="tab-set"><h2>Ayarlar</h2><div class="setlist">
       <button type="button" id="sSound"></button><button type="button" id="sRules">Nasıl oynanır</button><button type="button" id="sDemo">Hareketler ve sesler</button><button type="button" id="sTut">Öğreticiyi baştan oyna</button><p class="sub" id="sNet" style="margin:6px 2px 0">Sunucu: bağlanıyor…</p></div></section>
     <div class="epanel" id="ePanel" hidden><div class="ebox">
@@ -407,14 +422,24 @@ let TUTI=-1,tutBlock=false; /* which tutorial match is being played, -1 = a leag
 const TEAMC=[{s:"#17B3A3",d:"#0E7F74",l:"#5FE0D2"},{s:"#2F6FD6",d:"#1F4FA8",l:"#86AEF2"},{s:"#9B6BD6",d:"#6E44A8",l:"#C7A6F0"},{s:"#E8C21A",d:"#A88A0E",l:"#FFE580"},{s:"#E8443A",d:"#A92D25",l:"#FF8A80"},{s:"#2A2F3A",d:"#14171E",l:"#5A6273"}];
 let profile={trophies:0,name:"Plaj Kartalları",color:0,played:0,wins:0,best:null,top:0,tut:0,seen:{}};
 try{const sv=JSON.parse(localStorage.getItem("wv-profile")||"null");if(sv)profile=Object.assign(profile,sv)}catch(_){}
-const saveProfile=()=>{try{localStorage.setItem("wv-profile",JSON.stringify(profile))}catch(_){}if(typeof cloudSave==="function")cloudSave()};
+const saveProfile=()=>{try{localStorage.setItem("wv-profile",JSON.stringify(profile))}catch(_){}try{cloudSave()}catch(_){}};
 const leagueIdx=t=>{let i=0;LEAGUES.forEach((L,k)=>{if(t>=L.min)i=k});return i};
 const teamCol=()=>TEAMC[profile.color]||TEAMC[0];
 if(!profile.seen)profile.seen={};if(profile.tut==null)profile.tut=0;
 function applyStage(L){NP=L.np;MINL=L.minL;MAXHARD=L.hard;SEEDKEY=NP===7?(MINL>=5?"75":"7"):String(NP);
   Object.assign(RIVAL,{reach:L.reach,mean:L.mean,fastP:L.fastP});BLOCK_BASE=L.block;BLOCK_ON=L.block>0;TB=L.tb||0;SERVE_LIMIT=L.sl||12;SERVE_EXTRA=L.sx??1;
   WIN=L.win||7;BY2=!L.win;setFormation(NP,true)}
-function applyLeague(){applyStage(LEAGUES[leagueIdx(profile.trophies)])}
+function applyLeague(){applyStage(levelCfg(curLv))}
+/* levels: 3 per league. Inside a league the rival gets a little sharper: quicker words, a longer reach on the last level */
+const LV_MAX=15;let curLv=1;
+const lvLeague=n=>Math.min(LEAGUES.length-1,Math.floor((Math.max(1,n)-1)/3));
+function levelCfg(n){const L=LEAGUES[lvLeague(n)],k=(n-1)%3;return Object.assign({},L,{reach:L.reach+(k===2?1:0),fastP:L.fastP+0.08*k,tb:Math.max(0,(L.tb||0)-0.4*k),win:5,first:"me"})}
+/* online ranks: trophies only come from online matches */
+const ORANKS=[{n:"Bronz",min:0,c:"#C98E5E",reward:0},{n:"Gümüş",min:120,c:"#C8CCD2",reward:50},{n:"Altın",min:300,c:"#FFD34D",reward:80},{n:"Elmas",min:550,c:"#8FD8FF",reward:120},{n:"Şampiyon",min:900,c:"#FF8A5B",reward:200}];
+const rankIdx=t=>{let i=0;ORANKS.forEach((R,k)=>{if(t>=R.min)i=k});return i};
+/* players from before levels existed: their league becomes their level, trophies start fresh for online */
+if(profile.level==null){profile.level=profile.trophies>0?leagueIdx(profile.trophies)*3+1:1;profile.trophies=0;profile.top=0;saveProfile()}
+curLv=Math.min(LV_MAX,profile.level);
 const pool=()=>{const S=SEEDSET[SEEDKEY]||SEEDS,p=S.filter(x=>hardCount(x)<=MAXHARD);return p.length?p:S};
 const ZN=13,NET=2.2,BR=0.11,CAMH=17,OFF=9,GOLD=8,G=3.1;let WIN=7,BY2=true; /* 7 points, win by two; at 8-8 the next point wins (golden point) */
 const matchOver=()=>BY2?(me>=WIN||op>=WIN)&&(Math.abs(me-op)>=2||me>GOLD||op>GOLD):(me>=WIN||op>=WIN);
@@ -1425,7 +1450,7 @@ const ITEMS={
   fire:{name:"Ateş topu",price:40,desc:"Sonraki vuruşuna +2 güç ekler. Bloğu geçmek ya da sayı almak için."}};
 let inv={ice:2,hint:3,fire:1},coins=60,iceUntil=0,iceSaved=1,fireArmed=false,fireShot=false;
 try{const sv=JSON.parse(localStorage.getItem("wv-shop")||"null");if(sv){inv=Object.assign(inv,sv.inv||{});coins=sv.coins??coins}}catch(_){}
-function saveShop(){try{localStorage.setItem("wv-shop",JSON.stringify({inv,coins}))}catch(_){}if(typeof cloudSave==="function")cloudSave()}
+function saveShop(){try{localStorage.setItem("wv-shop",JSON.stringify({inv,coins}))}catch(_){}try{cloudSave()}catch(_){}}
 function typingNow(){return !tipOpen&&$("overlay").hidden&&$("shop").hidden&&!pending&&((mode==="serve"&&ready)||mode==="receive")}
 function syncTimer(){return;const bar=$("tbar");let f=-1,mk=0.5,fast=false;
   if(mode==="serve"&&ready&&$("overlay").hidden&&SERVE_LIMIT<1e6){const el=(performance.now()-readyT)/1000;f=Math.max(0,1-el/SERVE_LIMIT);mk=1-SERVE_FAST/SERVE_LIMIT;fast=el<SERVE_FAST}
@@ -1485,7 +1510,7 @@ function endPoint(mine,text,remote){
   say(text,mine?"good":"bad");sel=[];$("word").textContent="";$("word").className="";renderHud();
   nextServer=mine?"me":"op";setTimeout(()=>{refPoint={dir:nextServer,t0:performance.now()}},450);
   if(matchOver()&&TUTI>=0){if(me>op){sfx.point();setTimeout(()=>sfx.win(),500)}else sfx.loseMatch();tutorialDone(me>op);return}
-  if(matchOver()){if(me>op){sfx.point();setTimeout(()=>sfx.win(),500)}else sfx.loseMatch();const res=finishMatch(me>op),wasOnline=netOn();if(wasOnline)netFinish();setTimeout(()=>{overlay(me>op?"Maçı kazandın!":"Maçı kaybettin",endCard()+res,"Tekrar oyna",()=>{if(wasOnline){goHome();startMatch();return}regenEnergy();if(profile.energy<=0){goHome();openEnergy()}else newMatch()});$("ovP").insertAdjacentHTML("beforeend",'<div class="ovrow"><button type="button" class="ovalt" id="ovHome">Ana sayfa</button></div>');$("ovHome").addEventListener("click",()=>goHome())},900);return}
+  if(matchOver()){if(me>op){sfx.point();setTimeout(()=>sfx.win(),500)}else sfx.loseMatch();const wasOnline=netOn();if(!wasOnline){levelDone(me>op);return}const res=finishMatch(me>op);netFinish();setTimeout(()=>{overlay(me>op?"Maçı kazandın!":"Maçı kaybettin",endCard()+res,"Tekrar oyna",()=>{goHome();startOnline()});$("ovP").insertAdjacentHTML("beforeend",'<div class="ovrow"><button type="button" class="ovalt" id="ovHome">Ana sayfa</button></div>');$("ovHome").addEventListener("click",()=>goHome())},900);return}
   setTimeout(()=>newRally(nextServer),1500);
 }
 
@@ -1559,11 +1584,32 @@ function tutorialDone(won){const k=TUTI;profile.tut=Math.max(profile.tut||0,k+1)
   setTimeout(()=>{
     if(k<2)overlay("Ders "+(k+1)+" tamam",'<div class="final"><span style="color:#3FD3C2">'+me+'</span> – <span style="color:#FF8A5B">'+op+'</span></div><div class="tutcard">'+dots+'<p>'+next[k]+'</p></div>',"Devam",()=>newMatch());
     else{const L=LEAGUES[0];overlay("Hazırsın!",'<div class="welcome"><div class="tutcard">'+dots+'</div><span class="wl">'+L.n+'</span><div class="wd">'+"KUMA".split("").map(c=>"<i>"+c+"</i>").join("")+'</div>'+
-      '<p style="margin:0;color:#c9d6ea;font-size:15px">Sahada <b style="color:#FFD34D">'+L.np+' oyuncu</b>: '+L.minL+'–'+L.np+' harfli kelimeler. Lig atladıkça takımına yeni oyuncu katılır.</p>'+
-      '<div class="wr"><div><b style="color:#4BE08A">+30</b>kupa: galibiyet</div><div><b style="color:#FF8A5B">−15</b>kupa ve 1 enerji: yenilgi</div></div></div>',"Lige başla",()=>startMatch());
+      '<p style="margin:0;color:#c9d6ea;font-size:15px">Sahada <b style="color:#FFD34D">'+L.np+' oyuncu</b>: '+L.minL+'–'+L.np+' harfli kelimeler. 15 bölüm var, lig atladıkça takımına yeni oyuncu katılır.</p>'+
+      '<div class="wr"><div><b style="color:#FFD34D">15</b>bölüm: bilgisayara karşı</div><div><b style="color:#3FD3C2">Online</b>gerçek rakip, kupa kazan</div></div></div>',"Bölüm 1",()=>{curLv=1;startMatch()});
       $("ovP").insertAdjacentHTML("beforeend",'<div class="ovrow"><button type="button" class="ovalt" id="ovHome">Ana sayfa</button></div>');$("ovHome").addEventListener("click",()=>goHome())}},900)}
+/* end of a level: the next one opens; a new league brings a new teammate */
+function levelDone(won){const n=curLv;profile.played++;if(won)profile.wins++;
+  if(stats.best&&(!profile.best||stats.best.p>profile.best.p))profile.best=stats.best;
+  let extra="",gift=0;
+  if(won)curLv=Math.min(LV_MAX,n+1);
+  if(won&&n===profile.level&&profile.level<=LV_MAX){profile.level++;gift=20;const li=lvLeague(n+1);
+    if(n<LV_MAX&&li>lvLeague(n)){const L=LEAGUES[li];gift+=L.reward;extra='<div class="newleague">Yeni lig: '+L.n+'!</div><div class="newleague" style="font-size:15px;opacity:.9">Takımına yeni oyuncu katıldı: artık '+L.np+' harf'+(L.minL>3?', en az '+L.minL+' harfli kelimeler':'')+'</div>'}
+    coins+=gift;saveShop()}
+  saveProfile();
+  const sc='<div class="final"><span style="color:#3FD3C2">'+me+'</span> – <span style="color:#FF8A5B">'+op+'</span></div>',gl=gift?'<div class="trophy-delta up">'+COINI+'+'+gift+' jeton</div>':'';
+  setTimeout(()=>{
+    if(won&&n>=LV_MAX){overlay("Bütün bölümler bitti!",sc+gl+'<p style="margin:6px 0;color:#c9d6ea">15 bölümün hepsini geçtin. Şimdi online rakiplere karşı oyna!</p>',"Ana sayfa",()=>goHome());return}
+    if(won){overlay("Bölüm "+n+" tamam!",sc+gl+extra,"Bölüm "+(n+1),()=>{curLv=n+1;newMatch()})}
+    else overlay("Bölüm "+n,sc+'<p style="margin:6px 0;color:#c9d6ea">Bu sefer olmadı. Tekrar dene!</p>',"Tekrar dene",()=>newMatch());
+    $("ovP").insertAdjacentHTML("beforeend",'<div class="ovrow"><button type="button" class="ovalt" id="ovHome">Ana sayfa</button></div>');$("ovHome").addEventListener("click",()=>goHome())},900)}
+/* the level list: every opened level can be played again */
+function openLevels(){let h='<div class="lvgrid">';for(let n=1;n<=LV_MAX;n++){const L=LEAGUES[lvLeague(n)],open=n<=profile.level,done=n<profile.level;
+    h+='<button type="button" class="lv'+(done?" done":"")+(n===Math.min(LV_MAX,profile.level)?" cur":"")+'" data-lv="'+n+'" style="--bc:'+L.c+'"'+(open?'':' disabled')+'><b>'+n+'</b><small>'+L.np+' oy.</small></button>'}
+  h+='</div><p style="margin:8px 0 0;font-size:12.5px;color:var(--muted)">Her ligde 3 bölüm. Yeni ligde takımına bir oyuncu katılır.</p>';
+  overlay("Bölümler",h,"Kapat",()=>{});
+  document.querySelectorAll(".lvgrid .lv").forEach(b=>b.addEventListener("click",()=>{if(b.disabled)return;curLv=+b.dataset.lv;$("overlay").hidden=true;sfx.pick(2);startMatch()}))}
 function newStats(){stats={best:null,words:0,longest:0,missed:0}}
-function newMatch(){opCol=null;$("hudOp").textContent="RAKİP";me=0;op=0;newStats();TUTI=profile.tut<3?profile.tut:-1;const cfg=TUTI>=0?TUT[TUTI]:LEAGUES[leagueIdx(profile.trophies)];applyStage(cfg);
+function newMatch(){opCol=null;$("hudOp").textContent="RAKİP";me=0;op=0;newStats();TUTI=profile.tut<3?profile.tut:-1;const cfg=TUTI>=0?TUT[TUTI]:levelCfg(curLv);applyStage(cfg);
   document.querySelector(".app").classList.toggle("tut",TUTI>=0);$("hudMe").textContent=(profile.name.split(" ")[0]||"SEN").toUpperCase().slice(0,9);
   tutBlock=!!cfg.showBlock;nextServer=cfg.first||"me";newRally(nextServer)}
 /* ---------- "Hareketler ve sesler": every move played on a loop, plus a button for every sound ---------- */
@@ -1775,7 +1821,7 @@ function closeNet(){const N=net;if(!N)return;clearInterval(N.hi);clearInterval(N
 function netLeave(){if(!net)return;netSend({t:"bye"});net.inMatch=false;closeNet()}
 function netForfeit(){if(!netOn()||matchOver())return;const N=net;N.inMatch=false;mode="over";seq=null;scale=1;recv=null;pending=null;cover=null;sel=[];sfx.droneOff();
   const res=finishMatch(true);closeNet();sfx.win();
-  overlay("Rakip ayrıldı",'<div class="final"><span style="color:#3FD3C2">'+me+'</span> – <span style="color:#FF8A5B">'+op+'</span></div><p style="margin:6px 0;color:#c9d6ea">Rakibin maçtan çıktı, galibiyet senin.</p>'+res,"Tekrar oyna",()=>{goHome();startMatch()});
+  overlay("Rakip ayrıldı",'<div class="final"><span style="color:#3FD3C2">'+me+'</span> – <span style="color:#FF8A5B">'+op+'</span></div><p style="margin:6px 0;color:#c9d6ea">Rakibin maçtan çıktı, galibiyet senin.</p>'+res,"Tekrar oyna",()=>{goHome();startOnline()});
   $("ovP").insertAdjacentHTML("beforeend",'<div class="ovrow"><button type="button" class="ovalt" id="ovHome">Ana sayfa</button></div>');$("ovHome").addEventListener("click",()=>goHome())}
 /* the other phone went quiet: 20 s without a word, or gone from the room for 6 s */
 setInterval(()=>{if(!netOn())return;const now=Date.now();if(now-net.lastHeard>20000||(net.goneAt&&now-net.goneAt>6000))netForfeit()},1000);
@@ -1784,21 +1830,21 @@ window.addEventListener("pagehide",()=>{if(net)netSend({t:"bye"})});
 /* ---------- progress in the cloud: every guest gets an invisible anonymous account; one row per player in "profiles".
    The phone keeps working offline; the row is written a moment after any change and read back when the game opens. ---------- */
 let cloudUid=null,cloudT=0,cloudBusy=false,cloudDirty=false;
-const PROF_KEYS=["name","color","trophies","top","played","wins","best","tut","seen"];
-function cloudRow(){const r={id:cloudUid,coins,inv,updated_at:new Date().toISOString()};PROF_KEYS.forEach(k=>r[k]=profile[k]??null);return r}
+const PROF_KEYS=["name","color","trophies","top","played","wins","best","tut","seen","level"];let cloudNoLevel=false;
+function cloudRow(){const r={id:cloudUid,coins,inv,updated_at:new Date().toISOString()};PROF_KEYS.forEach(k=>r[k]=profile[k]??null);if(cloudNoLevel){delete r.level;r.seen=Object.assign({},profile.seen,{_lv:profile.level})}return r}
 function netStat(t){const el=$("sNet");if(el)el.textContent=t}
 async function cloudInit(){if(LOCALNET||!netReady()){netStat(LOCALNET?"Sunucu: yerel test modu":"Sunucu: kapalı (çevrimdışı oyun)");return}
   try{let {data}=await sbClient.auth.getSession();let ses=data&&data.session;
     if(!ses){const r=await sbClient.auth.signInAnonymously();if(r.error)throw r.error;ses=r.data.session}
     cloudUid=ses.user.id;netStat("Sunucu: bağlı ✓ (oyuncu "+cloudUid.slice(0,6)+")");
     const {data:row,error}=await sbClient.from("profiles").select("*").eq("id",cloudUid).maybeSingle();if(error)throw error;
-    if(row){PROF_KEYS.forEach(k=>{if(row[k]!=null)profile[k]=row[k]});if(row.coins!=null)coins=row.coins;if(row.inv)inv=Object.assign(inv,row.inv);
+    if(row){PROF_KEYS.forEach(k=>{if(row[k]!=null)profile[k]=row[k]});if(row.level==null&&row.seen&&row.seen._lv)profile.level=row.seen._lv;curLv=Math.min(LV_MAX,profile.level||1);if(row.coins!=null)coins=row.coins;if(row.inv)inv=Object.assign(inv,row.inv);
       try{localStorage.setItem("wv-profile",JSON.stringify(profile));localStorage.setItem("wv-shop",JSON.stringify({inv,coins}))}catch(_){}
       if(!$("home").hidden&&mode==="menu")renderHome()}
     else cloudPush()}catch(e){console.warn("cloud",e&&e.message||e);cloudUid=null;netStat("Sunucu: bağlanamadı ("+((e&&e.message)||e)+")")}}
 function cloudSave(){if(!cloudUid)return;cloudDirty=true;clearTimeout(cloudT);cloudT=setTimeout(cloudPush,1500)}
 async function cloudPush(){if(!cloudUid||cloudBusy)return;cloudBusy=true;cloudDirty=false;
-  try{const {error}=await sbClient.from("profiles").upsert(cloudRow());if(error)throw error}catch(e){console.warn("cloud save",e&&e.message||e);cloudDirty=true}
+  try{let {error}=await sbClient.from("profiles").upsert(cloudRow());if(error&&/level/.test(error.message||"")&&!cloudNoLevel){cloudNoLevel=true;({error}=await sbClient.from("profiles").upsert(cloudRow()))}if(error)throw error}catch(e){console.warn("cloud save",e&&e.message||e);cloudDirty=true}
   cloudBusy=false;if(cloudDirty){clearTimeout(cloudT);cloudT=setTimeout(cloudPush,4000)}}
 cloudInit();
 $("srX").addEventListener("click",()=>{stopSearch();closeNet();$("srch").hidden=true;sfx.pick(1)});
@@ -1819,26 +1865,27 @@ function renderEnergy(){regenEnergy();const e=profile.energy,ms=nextEnergyIn();
 function openEnergy(){renderEnergy();$("ePanel").hidden=false}
 setInterval(()=>{if(!$("home").hidden)renderEnergy()},1000);
 
-function finishMatch(won){const before=leagueIdx(profile.trophies),d=won?30:-15,online=netOn();if(!won&&!online)useEnergy();
+function finishMatch(won){const before=rankIdx(profile.trophies),d=won?30:-15,online=true;
   profile.trophies=Math.max(0,profile.trophies+d);profile.played++;if(won)profile.wins++;
   if(stats.best&&(!profile.best||stats.best.p>profile.best.p))profile.best=stats.best;
-  const after=leagueIdx(profile.trophies);let extra="";
-  if(after>(profile.top||0)){profile.top=after;const L=LEAGUES[after];coins+=L.reward;saveShop();extra='<div class="newleague">Yeni lig: '+L.n+'! +'+L.reward+' jeton</div>'+(L.np>LEAGUES[before].np?'<div class="newleague" style="font-size:15px;opacity:.9">Takımına yeni oyuncu katıldı: artık '+L.np+' harf</div>':'')+(L.minL>LEAGUES[before].minL?'<div class="newleague" style="font-size:15px;opacity:.9">Bu ligde en az '+L.minL+' harfli kelimeler</div>':'')}
-  else if(after<before)extra='<div class="newleague">'+LEAGUES[after].n+'\'ne düştün</div>';
+  const after=rankIdx(profile.trophies);let extra="";
+  if(after>(profile.top||0)){profile.top=after;const L=ORANKS[after];coins+=L.reward;saveShop();extra='<div class="newleague">Yeni rütbe: '+L.n+'! +'+L.reward+' jeton</div>';if(0)extra='<div class="newleague">Yeni lig: '+L.n+'! +'+L.reward+' jeton</div>'+(L.np>LEAGUES[before].np?'<div class="newleague" style="font-size:15px;opacity:.9">Takımına yeni oyuncu katıldı: artık '+L.np+' harf</div>':'')+(L.minL>LEAGUES[before].minL?'<div class="newleague" style="font-size:15px;opacity:.9">Bu ligde en az '+L.minL+' harfli kelimeler</div>':'')}
+  else if(after<before)extra='<div class="newleague">'+ORANKS[after].n+' rütbesine düştün</div>';
   saveProfile();
   const en=won||online?"":'<div class="trophy-delta down" style="font-size:17px">'+'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M13.5 2L4 13.5h6.5L9.5 22 20 9.5h-6.5z" fill="#4BE08A" stroke="#0B1426" stroke-width="1.2" stroke-linejoin="round"/></svg>'+'−1 enerji · '+profile.energy+' kaldı</div>';
   return '<div class="trophy-delta '+(d>0?"up":"down")+'">'+CUPI+(d>0?"+":"−")+Math.abs(d)+' kupa</div>'+en+extra}
 const CUPI='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M7 3h10v5a5 5 0 0 1-10 0z" fill="#FFD34D"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3" fill="none" stroke="#FFD34D" stroke-width="2"/><path d="M10 13h4v3h2v3H8v-3h2z" fill="#E0A800"/></svg>';
 const COINI='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#FFD34D" stroke="#B8860B" stroke-width="2"/><path d="M12 7v10M9.5 9.5h4a1.5 1.5 0 0 1 0 3h-3a1.5 1.5 0 0 0 0 3h4" stroke="#8A5A00" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>';
 function badge(el,i){el.style.setProperty("--bc",LEAGUES[i].c)}
-function renderHome(){renderEnergy();const t=profile.trophies,i=leagueIdx(t),L=LEAGUES[i],N=LEAGUES[i+1],tc=teamCol();
+function renderHome(){const t=profile.trophies,lvNow=Math.min(LV_MAX,profile.level),i=lvLeague(lvNow),L=LEAGUES[i],tc=teamCol(),ri=rankIdx(t),R=ORANKS[ri],RN=ORANKS[ri+1];
   document.documentElement.style.setProperty("--tc",tc.s);
   $("hTeam").textContent=profile.name;badge($("hCrest"),i);$("hCrest").querySelector("path").setAttribute("fill",tc.s);
-  $("hCoins").textContent=coins;$("hLeague").textContent=L.n;$("hTro").textContent=t;badge($("hBadge"),i);
-  $("hProg").style.width=(N?Math.min(100,(t-L.min)/(N.min-L.min)*100):100)+"%";
-  $("hNext").textContent=N?N.n+"’ne "+(N.min-t)+" kupa":"En üst lig";
-  const tut=profile.tut<3;$("playTxt").textContent=tut?"ÖĞRETİCİ":"OYNA";
-  $("hPlaySub").textContent=tut?"Ders "+(profile.tut+1)+"/3 · 3 sayı":(netReady()?"Online rakip · ":"7 sayı · ")+L.n+" · "+L.np+" oyuncu";$("playBtn").classList.toggle("online",!tut&&netReady());if(tut){$("playBtn").classList.remove("locked");$("hNext").textContent="Önce öğretici: "+profile.tut+"/3 ders"}$("hPlayed").textContent=profile.played;$("hWins").textContent=profile.wins;
+  $("hCoins").textContent=coins;$("hLeague").textContent="Bölüm "+lvNow;$("hTro").textContent=L.n+" · "+L.np+" oyuncu";badge($("hBadge"),i);
+  $("hProg").style.width=Math.min(100,(profile.level-1)/LV_MAX*100)+"%";
+  $("hNext").textContent=(profile.level>LV_MAX?"15 bölümün hepsi bitti":(profile.level-1)+"/15 bölüm tamamlandı · bölüm seçmek için dokun");
+  const tut=profile.tut<3;$("playTxt").textContent=tut?"ÖĞRETİCİ":"BÖLÜM "+curLv;
+  const CL=LEAGUES[lvLeague(curLv)];$("hPlaySub").textContent=tut?"Ders "+(profile.tut+1)+"/3 · 3 sayı":"5 sayı · "+CL.n+" · "+CL.np+" oyuncu";
+  const on=netReady();$("onlBtn").hidden=!on;$("onlBtn").disabled=tut;$("onlSub").textContent=tut?"Öğreticiden sonra":"6’ya 6 · "+t+" kupa · "+R.n;if(tut){$("playBtn").classList.remove("locked");$("hNext").textContent="Önce öğretici: "+profile.tut+"/3 ders"}$("hPlayed").textContent=profile.played;$("hWins").textContent=profile.wins;
   $("hBest").textContent=profile.best?profile.best.w:"—";
   /* market */
   const ML=$("mList");ML.innerHTML="";const icons={ice:$("puIce").querySelector("svg").outerHTML,hint:$("puHint").querySelector("svg").outerHTML,fire:$("puFire").querySelector("svg").outerHTML},col={ice:"#8FD8FF",hint:"#FFD34D",fire:"#FF8A5B"};
@@ -1850,30 +1897,31 @@ function renderHome(){renderEnergy();const t=profile.trophies,i=leagueIdx(t),L=L
   if(document.activeElement!==$("tName"))$("tName").value=profile.name;
   const SW=$("tColors");SW.innerHTML="";TEAMC.forEach((c,k)=>{const b=document.createElement("button");b.type="button";b.style.background=c.s;b.className=k===profile.color?"on":"";b.setAttribute("aria-label","Forma rengi "+(k+1));
     b.addEventListener("click",()=>{profile.color=k;saveProfile();sfx.pick(k+1);renderHome()});SW.appendChild(b)});
-  const RO=$("tRoster");RO.innerHTML="";const names=["Deniz","Kerem","Ada","Mert","Ece","Arda","Selin"],np=tut?3:L.np;
+  const RO=$("tRoster");RO.innerHTML="";const names=["Deniz","Kerem","Ada","Mert","Ece","Arda","Selin"],np=tut?3:CL.np;
   FORM[np].slice().sort((a,b)=>(a[0]===270?-1:b[0]===270?1:a[1]-b[1])).forEach(([a,n],k)=>{const sn=Math.sin(a*Math.PI/180),role=a===270?"Servisçi":sn>0.2?"Filede":sn>-0.2?"Kanat":"Arka";
     const d=document.createElement("div");d.className="pl";d.innerHTML='<span class="num">'+n+'</span><span>'+names[k]+'<br><span class="role">'+role+'</span></span><span></span>';RO.appendChild(d)});
   /* trophy road */
-  const RD=$("cRoad");RD.innerHTML="";LEAGUES.slice().reverse().forEach(Lg=>{const k=LEAGUES.indexOf(Lg),d=document.createElement("div");
-    d.className="lg"+(k===i?" cur":"")+(t<Lg.min?" lock":"");d.innerHTML='<span class="lbadge" style="--bc:'+Lg.c+'">'+$("hBadge").innerHTML+'</span><span><b>'+Lg.n+'</b><small>'+(Lg.min?Lg.min+" kupa":"Başlangıç")+" · "+Lg.np+" oyuncu"+(Lg.minL>3?", en az "+Lg.minL+" harf":"")+(k===i?" · buradasın":"")+'</small></span><span class="rw">'+(Lg.reward?COINI+Lg.reward:"")+'</span>';RD.appendChild(d)});
+  const RD=$("cRoad");RD.innerHTML="";ORANKS.slice().reverse().forEach(Lg=>{const k=ORANKS.indexOf(Lg),d=document.createElement("div");
+    d.className="lg"+(k===ri?" cur":"")+(t<Lg.min?" lock":"");d.innerHTML='<span class="lbadge" style="--bc:'+Lg.c+'">'+$("hBadge").innerHTML+'</span><span><b>'+Lg.n+'</b><small>'+(Lg.min?Lg.min+" kupa":"Başlangıç")+(k===ri?" · buradasın ("+t+" kupa)":"")+'</small></span><span class="rw">'+(Lg.reward?COINI+Lg.reward:"")+'</span>';RD.appendChild(d)});
   $("sSound").textContent="Ses: "+(sfx.muted?"Kapalı":"Açık");
 }
 function showTab(id){$("home").classList.toggle("dim",id!=="home");document.querySelectorAll(".home .tab").forEach(t=>t.classList.toggle("on",t.id==="tab-"+id));document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===id));renderHome()}
 function goHome(tab){if(netOn()&&net.inMatch)netLeave();if(tipOpen){tipOpen=false;$("tip").hidden=true}document.querySelector(".app").classList.remove("tut");mode="menu";seq=null;react=null;sel=[];cover=null;cine=null;recv=null;pending=null;letters=[];scale=1;ball=restBall();sfx.droneOff();
   $("overlay").hidden=true;$("shop").hidden=true;document.querySelector(".app").classList.add("menu");$("home").hidden=false;$("word").textContent="";showTab(tab||"home")}
-function startMatch(){sfx.init();sfx.music();regenEnergy();if(profile.tut>=3&&netReady()){$("ePanel").hidden=true;startSearch();return}if(profile.tut>=3&&profile.energy<=0){goHome();openEnergy();return}$("ePanel").hidden=true;$("home").hidden=true;document.querySelector(".app").classList.remove("menu");newMatch()}
+function startOnline(){sfx.init();sfx.music();if(profile.tut<3||!netReady())return;$("ePanel").hidden=true;startSearch()}
+function startMatch(){sfx.init();sfx.music();if(profile.tut>=3&&!$("overlay").hidden)$("overlay").hidden=true;$("ePanel").hidden=true;$("home").hidden=true;document.querySelector(".app").classList.remove("menu");newMatch()}
 $("playBtn").addEventListener("click",startMatch);
 $("hEnergyChip").addEventListener("click",openEnergy);$("eClose").addEventListener("click",()=>{$("ePanel").hidden=true});
 $("eFill").addEventListener("click",()=>{if(coins<E_FILL)return;coins-=E_FILL;profile.energy=E_MAX;profile.eT=Date.now();saveShop();saveProfile();sfx.coin();$("ePanel").hidden=true;renderHome()});
 document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>{sfx.init();sfx.music();sfx.pick(2);showTab(b.dataset.tab)}));
-$("hLeagueCard").addEventListener("click",()=>showTab("cups"));$("hTeamChip").addEventListener("click",()=>showTab("team"));
+$("hLeagueCard").addEventListener("click",()=>{sfx.init();if(profile.tut>=3)openLevels()});$("onlBtn").addEventListener("click",startOnline);$("hTeamChip").addEventListener("click",()=>showTab("team"));
 $("tName").addEventListener("input",e=>{profile.name=e.target.value.trim()||"Plaj Kartalları";saveProfile();$("hTeam").textContent=profile.name});
 $("sSound").addEventListener("click",()=>{sfx.init();sfx.toggle();syncSnd();renderHome()});
 $("sRules").addEventListener("click",()=>{overlay("Nasıl oynanır",rulesHTML(),"Kapat",()=>{})});
 $("sDemo").addEventListener("click",demoOpen);
 $("sTut").addEventListener("click",()=>{profile.tut=0;profile.seen={};saveProfile();sfx.ok();showTab("home")});
 $("home").addEventListener("pointerdown",()=>{sfx.init();sfx.music()},{once:true});
-const rulesHTML=()=>'<p style="margin:-4px 0 12px;font-size:13px;color:var(--muted);letter-spacing:.04em">Kelime Footvolley</p><ol class="rules"><li><span class="n">1</span><span>Oyuncuların harflerine <b>dokun ya da kaydır</b>, kelime yaz. Kaydırınca parmağını kaldırdığında, dokunurken <b>son harfe tekrar dokununca</b> vurursun. Önceki bir harfe dokunursan oraya geri dönersin.</span></li><li><span class="n">2</span><span>Mavi küçük harfli daireler iki harf sayılır: <b>S/Ş, I/İ, C/Ç, G/Ğ, O/Ö, U/Ü</b>. Hangi harf olacağına oyun karar verir.</span></li><li><span class="n">3</span><span><b>Güç</b> = her harf +1, hızlı yazarsan +1, her <b>zor harf</b> (turuncu halka) +1. '+RIVAL.reach+' güç ve üstü sayı, servis '+(RIVAL.reach+SERVE_EXTRA)+' güç ister.</span></li><li><span class="n">4</span><span>Rakip de kelimeyle vurur. Ağır çekimde <b>topun geldiği harfle</b> başlayan kelimeyi yetiştir.</span></li><li><span class="n">5</span><span><b>Blok:</b> kelimen filedeki oyunculardan biriyle bitiyorsa en az '+BLOCK_BASE+' güç ister. Bloklanırsan top düşerken altın halkaya dokunup kurtarabilirsin. Ralli uzadıkça <b>yorgunluk</b> artar: blok yükselir, süren kısalır.</span></li><li><span class="n">6</span><span>Servis '+SERVE_LIMIT+' saniye. Sayıyı alan servis atar. <b>7 sayı</b> ve 2 fark kazandırır, 8–8 olursa <b>altın sayı</b>: sonraki sayıyı alan kazanır.</span></li><li><span class="n">7</span><span><b>Ligler:</b> Kum Ligi 4 oyuncuyla başlar, lig atladıkça takımına oyuncu katılır (7’ye kadar). Son iki ligde kısa kelimeler sayılmaz.</span></li></ol><p style="margin-top:10px;font-size:11.5px;color:var(--muted)">49.000+ kelime kabul edilir (3–7 harf), harfler en sık kullanılan 5.764 kelimeden seçilir: Vikisözlük (CC BY-SA) ve OpenSubtitles sıklık listesi</p>';
+const rulesHTML=()=>'<p style="margin:-4px 0 12px;font-size:13px;color:var(--muted);letter-spacing:.04em">Kelime Footvolley</p><ol class="rules"><li><span class="n">1</span><span>Oyuncuların harflerine <b>dokun ya da kaydır</b>, kelime yaz. Kaydırınca parmağını kaldırdığında, dokunurken <b>son harfe tekrar dokununca</b> vurursun. Önceki bir harfe dokunursan oraya geri dönersin.</span></li><li><span class="n">2</span><span>Mavi küçük harfli daireler iki harf sayılır: <b>S/Ş, I/İ, C/Ç, G/Ğ, O/Ö, U/Ü</b>. Hangi harf olacağına oyun karar verir.</span></li><li><span class="n">3</span><span><b>Güç</b> = her harf +1, hızlı yazarsan +1, her <b>zor harf</b> (turuncu halka) +1. '+RIVAL.reach+' güç ve üstü sayı, servis '+(RIVAL.reach+SERVE_EXTRA)+' güç ister.</span></li><li><span class="n">4</span><span>Rakip de kelimeyle vurur. Ağır çekimde <b>topun geldiği harfle</b> başlayan kelimeyi yetiştir.</span></li><li><span class="n">5</span><span><b>Blok:</b> kelimen filedeki oyunculardan biriyle bitiyorsa en az '+BLOCK_BASE+' güç ister. Bloklanırsan top düşerken altın halkaya dokunup kurtarabilirsin. Ralli uzadıkça <b>yorgunluk</b> artar: blok yükselir, süren kısalır.</span></li><li><span class="n">6</span><span>Servis '+SERVE_LIMIT+' saniye. Sayıyı alan servis atar. Bölüm maçlarını <b>5 sayıya</b> ilk ulaşan kazanır. Online maçlar <b>7 sayı</b> ve 2 fark, 8–8 olursa <b>altın sayı</b>.</span></li><li><span class="n">7</span><span><b>Bölümler:</b> 15 bölüm, her ligde 3 bölüm. Kum Ligi 4 oyuncuyla başlar, lig atladıkça takımına oyuncu katılır (7’ye kadar). Son iki ligde kısa kelimeler sayılmaz. <b>Online</b> maçlar 6’ya 6 oynanır, kupa sadece orada kazanılır.</span></li></ol><p style="margin-top:10px;font-size:11.5px;color:var(--muted)">49.000+ kelime kabul edilir (3–7 harf), harfler en sık kullanılan 5.764 kelimeden seçilir: Vikisözlük (CC BY-SA) ve OpenSubtitles sıklık listesi</p>';
 requestAnimationFrame(()=>{resize();newStats();mode="menu";letters=[];ball=restBall();requestAnimationFrame(loop);
   goHome();});
 document.fonts&&document.fonts.ready.then(draw);
